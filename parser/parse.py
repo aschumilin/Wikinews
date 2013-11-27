@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import time as time 
+from string import join
 
 #def descend(element):
 #	if list(element).__len__()>0:
@@ -23,8 +24,13 @@ end1 = time.time()
 start2 = time.time()
 liste = doc.findall(".//*")
 end2 = time.time()
+
+outputFile = open('../../../en_wikinews_2013-10-30/wikinews-tags.txt', 'w')
+
 for el in liste:
 	print el.tag
+	result = el.tag, "\n"
+	outputFile.writelines(result)
 
 print "time for parsing the dump: ", end1 - start1, " sec"
 print "time for collecting all tags: ", end2 - start2, " sec"
