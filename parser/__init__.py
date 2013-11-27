@@ -1,8 +1,21 @@
 import xml.etree.ElementTree as ET
 
-# http://docs.python.org/2/library/xml.etree.elementtree.html
+#def descend(element):
+#	if list(element).__len__()>0:
+#		print element.tag
+#		descend(element)
+#	else:
+#		print element.tag
 
-wikinewsDump = ET.parse("/media/MYLINUXLIVE/AIFB/datasets/en/enwikinews-20131030-pages-articles.xml")
-for child in wikinewsDump:
-	print child.tag, child.attrib
+#dump = ET.parse("/media/MYLINUXLIVE/AIFB/datasets/en/enwikinews-20131030-pages-articles.xml")
+testdump = ET.parse('/media/MYLINUXLIVE/AIFB/datasets/test_xml.xml')
+doc = testdump.getroot()
 
+liste = doc.findall(".//*")
+for el in liste:
+	print el.tag
+		
+
+#elements = list(doc)
+#for el in elements:
+#	print el.tag 
