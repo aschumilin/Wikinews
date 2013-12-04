@@ -1,0 +1,17 @@
+country
+rank
+year
+gdppc
+neighbor
+neighbor
+country
+rank
+year
+gdppc
+neighbor
+country
+rank
+year
+gdppc
+neighbor
+neighbor
