@@ -15,10 +15,16 @@ T = Timer() # stop watch to keep track of cpu time
 #baseDir = "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/"
 baseDir = "/dev/shm/wikinews/" 
 
+#homeDir =  "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/"
+homeDir = "/media/MYLINUXLIVE/AIFB/datasets/en/"
+
+#dumpFileName = "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/enwikinews-20131030-pages-articles.xml"
+dumpFileName = "/media/MYLINUXLIVE/AIFB/datasets/en/enwikinews-20131030-pages-articles.xml"
+
 articleDirName = baseDir + "articles_pages/"
 junkDirName = baseDir + "other_pages/"
 logFileName = baseDir + "debug.log"
-dumpFileName = "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/enwikinews-20131030-pages-articles.xml"
+
 
 
 #===================
@@ -104,9 +110,11 @@ for page in pages:
 			pageTitle = page.find(".//" + namespace + "title").text
 			pageID = page.find(".//" + namespace + "id").text
 			
-			targetFileName = constructTitle(pageID, pageTitle)
+			fullName = pageID + "-" + pageTitle.replace(" ", "_").replace(":", "#").replace("/", "-")
+			targetFileName = fullName[0:50]
+			# first replace: title blanks / second: wiki-namespace colons / third: wiki-pages special chars 
 
-			
+			print "tfn: " , 
 			
 
 			if pageNS == 0: 
@@ -148,16 +156,12 @@ if exceptionOccured: print "es gab eine Exception bei page processing"
 # move the final output out of /dev/shm to home dir
 
 T.click()
-if ("/dev/shm" in baseDir):
-	L.debug("start copying to home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/")
-	os.system("cp -r /dev/shm/wikinews/* /home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/")
+if ("/dev/shm" in baseDir): # if all work was done in temp memory, copy results home
+	L.debug("start copying to " + homeDir)
+	os.system("cp -r /dev/shm/wikinews/* " + homeDir)
 T.click()
 L.debug("copying done in " + T.show())
 
 
 
-def constructFileName(pid, title):
-	fullName = pid + "-" + pageTitle.replace(" ", "_").replace(":", "#").replace("/", "-")
-	return fullName[0:50]
-	# first replace: title blanks, second: wiki-namespace colons, third: wiki-pages special chars 
 
