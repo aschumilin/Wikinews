@@ -4,7 +4,7 @@ from Timer import Timer
 
 T = Timer()
 
-files = os.listdir("/dev/shm/wikinews/articles_pages/") #  komischer output???
+files = os.listdir("/dev/shm/wikinews/articles_pages/") 
 
 
 resultFile = open("/dev/shm/wikinews/" + "hasTextElement", "w")

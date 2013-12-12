@@ -13,7 +13,7 @@ if not os.path.exists(articles_cleaned):
     os.makedirs(articles_cleaned)
 
 
-dir = "/media/MYLINUXLIVE/AIFB/datasets/en/" # this one must exist
+dir = "/media/MYLINUXLIVE/AIFB/datasets/en/en_stats/" # this one must exist
 file = open(dir + "charCount", "r")
 resultFile = open(dir + "pagesSortedByCount", "w")
 charCountStat = open(dir + "charCountStatistics", "w")
@@ -132,6 +132,14 @@ wiki_ns = ['Media',
  'Education Program talk',
  'Module',
  'Module talk']
+
+# count occurance of namespaces in the dump 
+dictNS = dict()
+for ns in wiki_ns:
+    anz = len(re.findall("\[\[" + ns + "\:(.+?)\]\]", wikinewsDumpXML))
+    dictNS.update({ns:anz})
+
+
 
 '''
 
