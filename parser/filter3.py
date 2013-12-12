@@ -334,8 +334,8 @@ defaultNamespace = "{http://www.mediawiki.org/xml/export-0.8/}"
 
 
 sourceDir = "/dev/shm/wikinews/articles_cleaned/"
-resultDir = "/dev/shm/wikinews/good_entities/"
-resultBadDir = "/dev/shm/wikinews/bad_entities/"
+resultDir = "/dev/shm/wikinews/candidates_good/"
+resultBadDir = "/dev/shm/wikinews/candidates_bad/"
 if not os.path.exists(resultDir):
     os.makedirs(resultDir)
 if not os.path.exists(resultBadDir):
@@ -351,6 +351,7 @@ numberEntityCands = 0
 strangePrefixes = codecs.open("/dev/shm/wikinews/strangePrefixes", "w", "utf-8")
 goodPrefixes = codecs.open("/dev/shm/wikinews/goodPrefixes", "w", "utf-8")
 
+j = 0
 for fileName in articles:
 
 
@@ -370,11 +371,23 @@ for fileName in articles:
 	
 
 	# [[...]]
+	
 	for cand in cands:
 
 		prefix1 = cand.split(":")[0].lower() # !!!!!!!!!!! lower case !!!!!!!!!!!!!!!!!!!!!!
 		length = len(cand.split(":"))
 
+
+		# ...:user: ... not not an entity
+		if ":user:" in cand.lower():
+			j += 1
+			continue
+		if "category:wikipedia" in cand.lower():
+			j += 1
+			continue
+
+
+			
 		if prefix1 in allowedPrefixes:
 			numberEntityCands += 1
 			resultFile.write(cand + "\n")
@@ -419,34 +432,6 @@ for fileName in articles:
 strangePrefixes.close()
 goodPrefixes.close()
 T.click()
-
+print " j ", j
 print str(numberEntityCands) , " ent cands in " , T.show()
-"""
-for item in cands:
-	try:
-		prefix = item.split(":")[0]
-	except:
-		print "ERROR at: ", item
-	if prefix not in wiki_ns:
-		nonNsCands.append(item)
-
-
-goodPrefs = ['w', 'wikipedia']
-res2 =[]
-for i in res:
-	pref1 = i.split(":")[0].lower()
-	if pref1 == "":
-		try:
-			pref2 = i.split(":")[1].lower()
-			if (pref2 not in goodPrefs) and (pref2 not in langs):
-				print pref2, " --- ", i
-				res2.append(i) 
-		except:
-			"index Error: ", i
-	else:
-		if (pref1 not in goodPrefs) and (pref1 not in langs) and (pref1 not in forbiddenPrefixes):
-			print pref1, " --- ", i
-			res2.append(i)
-
-"""
 

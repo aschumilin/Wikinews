@@ -2,6 +2,8 @@
 
 #export H="/media/MYLINUXLIVE/AIFB/Wikinews/"
 #export M="/dev/shm/wikinews/"
+# example article :
+# /dev/shm/wikinews/articles_cleaned/86383-Al_Sharpton_speaks_out_on_race,_rights_and_w
 
 mkdir /dev/shm/wikinews
 
@@ -22,7 +24,7 @@ mkdir /dev/shm/wikinews/articles_cleaned
 # 4: execute filter2
 python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter2.py
 
-# #5: manual cleaning
+# 5: manual cleaning of bad pages
 rm /dev/shm/wikinews/articles_cleaned/*Main_Page*
 rm /dev/shm/wikinews/articles_cleaned/*-Colleges_offering_admission_to_displaced_New
 rm /dev/shm/wikinews/articles_cleaned/54162-2006_U.S._Congressional_Elections
@@ -33,11 +35,13 @@ rm /dev/shm/wikinews/articles_cleaned/*News_briefs*
 rm /dev/shm/wikinews/articles_cleaned/*Wikinews_shorts*
 
 
-# example article :
-# /dev/shm/wikinews/articles_cleaned/86383-Al_Sharpton_speaks_out_on_race,_rights_and_w
 
-# 6: extract candidate entities from each article 
+
+# 6: extract candidate entities from each article (entities & lang-links)
 python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter3.py
+
+#7: separate lang-links from entities
+python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter4.py
 
 
 echo "done"
