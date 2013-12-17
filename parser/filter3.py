@@ -352,6 +352,7 @@ strangePrefixes = codecs.open("/dev/shm/wikinews/strangePrefixes", "w", "utf-8")
 goodPrefixes = codecs.open("/dev/shm/wikinews/goodPrefixes", "w", "utf-8")
 
 j = 0
+i = 0
 for fileName in articles:
 
 
@@ -404,7 +405,9 @@ for fileName in articles:
 					resultBadFile.write(cand + "\n")					
 					strangePrefixes.write("[[" + cand[0:50] + "\n")
 			except:
-				print ".", #"prefix2 Error   ", cand	
+ 				i += 1
+				if (i % 100) == 0:
+					print ".", #"prefix2 Error   ", cand	
 
 
 

@@ -32,7 +32,7 @@ rm /dev/shm/wikinews/articles_cleaned/180311-2010_UK_general_election_results
 rm /dev/shm/wikinews/articles_cleaned/8636-Results_of_2005_United_Kingdom_General_Electi
 rm /dev/shm/wikinews/articles_cleaned/*-Australia-200*
 rm /dev/shm/wikinews/articles_cleaned/*News_briefs*
-rm /dev/shm/wikinews/articles_cleaned/*Wikinews_shorts*
+rm /dev/shm/wikinews/articles_cleaned/*Wikinews_Shorts*
 
 
 
