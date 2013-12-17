@@ -1,4 +1,4 @@
-""" sort pages by character count in the text element """
+""" sort pages by character count in the text element -> sort out the short ones """
 
 import operator
 import os

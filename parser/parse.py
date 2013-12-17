@@ -160,7 +160,7 @@ if ("/dev/shm" in baseDir): # if all work was done in temp memory, copy results 
 
 	# better: compress results:
 	L.debug("start compression of baseDir  " + homeDir)
-	os.system("tar -zcvf " + baseDir + "wikinews-pages.tar.gz " + daseDir)
+	os.system("tar -zcvf " + baseDir + "wikinews-pages.tar.gz " + baseDir)
 	#os.system("cp -r /dev/shm/wikinews/* " + homeDir)
 T.click()
 L.debug("copying done in " + T.show())
