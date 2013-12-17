@@ -38,16 +38,15 @@ rm /dev/shm/wikinews/articles_cleaned/*Wikinews_Shorts*
 
 
 # 6: extract candidate entities from each article (entities & lang-links)
-#python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter3.py
+python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter3.py
 
 #7: separate lang-links from entities
 python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter4.py
 
-# save space if following files are not needed
-#rm -rf /dev/shm/wikinews/articles_cleaned
-#rm -rf /dev/shm/wikinews/candidates_bad
-#rm -rf /dev/shm/wikinews/candidates_good
-#rm -rf /dev/shm/wikinews/articles_pages
-#rm -rf /dev/shm/wikinews/other_pages
+rm -rf /dev/shm/wikinews/articles_cleaned
+rm -rf /dev/shm/wikinews/candidates_bad
+rm -rf /dev/shm/wikinews/candidates_good
+rm -rf /dev/shm/wikinews/articles_pages
+rm -rf /dev/shm/wikinews/other_pages
 
 echo "done"
