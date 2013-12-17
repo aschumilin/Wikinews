@@ -6,3 +6,12 @@ https://www.mediawiki.org/wiki/API:Properties#langlinks_.2F_ll
 http://stackoverflow.com/questions/15371505/parsing-wikipedia-stubs-using-python-wikitools
 
 http://stackoverflow.com/questions/6589873/wikitools-wikipedia-and-python/6593085#6593085
+
+
+9334-Chili_Finger_Incident
+(doesnt work) 
+http://en.wikinews.org/w/api.php?action=query&ids=9334&prop=links 
+
+(works)
+http://en.wikinews.org/w/api.php?action=query&titles=Chili_Finger_Incident&prop=links
+http://en.wikinews.org/w/api.php?action=query&titles=Results_of_2005_German_federal_election&prop=langlinks
