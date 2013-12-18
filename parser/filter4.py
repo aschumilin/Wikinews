@@ -1,7 +1,7 @@
 """ gettting the entities for each document 
 /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter4.py"""
 
-import os, re, codecs 
+import os, codecs 
 from Timer import Timer 
 
 T = Timer()
@@ -50,7 +50,7 @@ for fileName in articles:
 	sourceFile = codecs.open(sourceDir + fileName, "r", "utf-8")
 
 	for line in sourceFile:
-		line = line.encode("utf-8").decode("utf-8")
+		line = line.encode("utf-8").decode("utf-8") # !!!! read as UTF-8
 		langPref = line.split(":")[0]
 		
 
@@ -100,6 +100,8 @@ T.click()
 print " lang links: ", str(sum(langLinkStat)), "\n entities: ", str(sum(entStat))
 print "done in " , T.show()
 
+
+# calculating entity and langlink stats
 e = dict()
 for j in entStat:
 	if e.get(j) == None:

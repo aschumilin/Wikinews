@@ -1,13 +1,52 @@
 """ Wikinews explorer GUI """
 from Tkinter import Tk, Frame, Scrollbar, Label, Text, Listbox, Button, INSERT, END, ACTIVE, W, E
 import tkMessageBox
-import os
+import os, urllib2, sys
+import xml.etree.ElementTree as ET
 
+#from Timer import Timer
 
+def extractEntityName(entityString):
+	#allowedPrefs = wikiPrefixes = ['w', 'wikipedia']
+	if ":" in entityString:
+		if entityString.startswith("w:"):
+			rest = entityString.split("w:")[1]
+			print "--- ", rest
+			if "|" in rest: return extractEntityName("w|" + rest)
+		elif entityString.startswith(":w:"):
+			rest = entityString.split(":w:")[1]
+			if "|" in rest: return extractEntityName("w|" + rest)
+		elif entityString.startswith("wikipedia:"):
+			rest = entityString.split("wikipedia:")[1]
+			if "|" in rest: return extractEntityName("w|" + rest)
+		elif entityString.startswith(":wikipedia:"):
+			rest = entityString.split(":wikipedia:")[1]
+			if "|" in rest: return extractEntityName("w|" + rest)
+	
+	if "|" in entityString:
+		parts = entityString.split("|")
+		
+		if (parts[0].lower() == "w") or (parts[0].lower() == "wikipedia"):
+			if len(parts) == 2:
+				# w|ent
+				return parts[1].replace(" ", "_") 	
+				print "detected: (w, wikipedia)|ent"
+			elif len(parts) == 3:
+				# w|ent|phrase
+				return parts[1].replace(" ", "_")
+				print "detected: (w, wikipedia)|ent|phrase"
+			elif len(parts) ==	4:
+				# w|ent|anchor|phrase
+				return parts[1].replace(" ", "_")	
+				print "detected: (w, wikipedia)|ent|anchor|phrase"
+
+                
 
 class WikinewsExplorer:
 	def __init__(self, master):
-
+		
+		
+		self.currentFileName = ""
 		self.entDir = "/dev/shm/wikinews/entities/"
 		self.llDir= "/dev/shm/wikinews/lang_links/"
 		self.boolFileLoad = False
@@ -50,7 +89,7 @@ class WikinewsExplorer:
 		self.scrollbar.grid(row=2, column=3, sticky=W)
 		self.scrollbar.config( command = self.lstArticles.yview )
 		
-		self.butOpenBrowser = Button(frame, text="Open in Firefox", command=self.openInFirefox)
+		self.butOpenBrowser = Button(frame, text="Open Article in Firefox", command=self.openInFirefox)
 		self.butOpenBrowser.grid(row=3, column=0)
 	
 	
@@ -68,16 +107,58 @@ class WikinewsExplorer:
 		self.scrollbar2 = Scrollbar(frame)		
 		self.lstContent = Listbox(frame, yscrollcommand=self.scrollbar2.set, width=100, height=30)
 		self.lstContent.grid(row=0, column=3, rowspan=5)
+		self.lstContent.bind("<<ListboxSelect>>", self.onEntitySelect)
 		self.scrollbar2.grid(row=0, column=3, sticky=W)
 		self.scrollbar2.config( command = self.lstContent.yview )
 		
+		
+		self.scrollbar3 = Scrollbar(frame)		
+		self.lstWikiLinks = Listbox(frame, yscrollcommand=self.scrollbar3.set, width=70, height=30)
+		self.lstWikiLinks.grid(row=5, column=3, sticky=W)
+		self.scrollbar3.grid(row=5, column=3, sticky=W)
+		self.scrollbar3.config( command = self.lstWikiLinks.yview )
+	
+	
+	
+	def onEntitySelect(self, event):
+		# enpty content box
+		self.lstWikiLinks.delete(0, END)
+		widg = event.widget
+		index = int(widg.curselection()[0])
+		entityString = widg.get(index)
+		print 'selected entity %d: "%s"' % (index, entityString)	
+		
+		entityName = extractEntityName(entityString)
+		self.lstWikiLinks.insert(END, "en.wikipedia.org/wiki/" + entityName) 
+		self.lstWikiLinks.insert(END, "======= links to the following wiki entities: ========================") 
+		
+		url = "http://en.wikipedia.org/w/api.php?format=xml&action=query&titles=" + entityName +"&prop=links"
+		print "HTTP request: ", url
+		xmlResponseTree = None
+		try:
+			response = urllib2.urlopen(url).read()
+			xmlResponseTree = ET.fromstring(response)
+		except:
+			print " \n ERROR: ", str(sys.exc_info()[0])
+								
+		
+		if xmlResponseTree != None:
+			for link in xmlResponseTree.iter("pl"):
+# 				item = "en.wikipedia.org/wiki/" + 
+				self.lstWikiLinks.insert(END, link.attrib.get("title"))
+		else:
+			print " xml response tree empty "
+		
 	def onArticleSelect(self, event):
 		
-		# enpty content box
+		# enpty content boxes
 		self.lstContent.delete(0, END)
+		self.lstWikiLinks.delete(0,END)
+		
 		widg = event.widget
 		index = int(widg.curselection()[0])
 		fileName = widg.get(index)
+		self.currentFileName = fileName
 		print 'selected item %d: "%s"' % (index, fileName)	
 		
 		# load the entity and lang-link files and display in the content box
