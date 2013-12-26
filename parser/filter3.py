@@ -42,9 +42,8 @@ goodPrefixes = codecs.open("/dev/shm/wikinews/goodPrefixes", "w", "utf-8")
 j = 0
 i = 0
 for fileName in articles:
-
-
-	# 1. extract article text
+    
+    # 1. extract article text
 	root = ET.parse(sourceDir + fileName).getroot()
 	artText = root.find(".//" + defaultNamespace + "text").text
 
@@ -126,51 +125,84 @@ print " j ", j
 print str(numberEntityCands) , " ent cands in " , T.show()
 
 
-def classifyCnadidateEntity(candidate):
-    """ classifier for [[...]] candidates """
+def classifyCnadidateEntity(entityString):
+    """ classifier for [[...]] and {{...}} candidates """
     
     allowedPrefs = wikiPrefixes = ['w', 'wikipedia']
     langPrefixes = ['en', 'de', 'fr', 'nl', 'it', 'es', 'ru', 'sv', 'pl', 'ja', 'pt', 'ar', 'zh', 'uk', 'ca', 'no', 'fi', 'cs', 'hu', 'tr', 'ro', 'sw', 'ko', 'kk', 'vi', 'da', 'eo', 'sr', 'id', 'lt', 'vo', 'sk', 'he', 'fa', 'bg', 'sl', 'eu', 'war', 'lmo', 'et', 'hr', 'new', 'te', 'nn', 'th', 'gl', 'el', 'ceb', 'simple', 'ms', 'ht', 'bs', 'bpy', 'lb', 'ka', 'is', 'sq', 'la', 'br', 'hi', 'az', 'bn', 'mk', 'mr', 'sh', 'tl', 'cy', 'io', 'pms', 'lv', 'ta', 'su', 'oc', 'jv', 'nap', 'nds', 'scn', 'be', 'ast', 'ku', 'wa', 'af', 'be-x-old', 'an', 'ksh', 'szl', 'fy', 'frr', 'yue', 'ur', 'ia', 'ga', 'yi', 'als', 'hy', 'am', 'roa-rup', 'map-bms', 'bh', 'co', 'cv', 'dv', 'nds-nl', 'fo', 'fur', 'glk', 'gu', 'ilo', 'kn', 'pam', 'csb', 'km', 'lij', 'li', 'ml', 'gv', 'mi', 'mt', 'nah', 'ne', 'nrm', 'se', 'nov', 'qu', 'os', 'pi', 'pag', 'ps', 'pdc', 'rm', 'bat-smg', 'sa', 'gd', 'sco', 'sc', 'si', 'tg', 'roa-tara', 'tt', 'to', 'tk', 'hsb', 'uz', 'vec', 'fiu-vro', 'wuu', 'vls', 'yo', 'diq', 'zh-min-nan', 'zh-classical', 'frp', 'lad', 'bar', 'bcl', 'kw', 'mn', 'haw', 'ang', 'ln', 'ie', 'wo', 'tpi', 'ty', 'crh', 'jbo', 'ay', 'zea', 'eml', 'ky', 'ig', 'or', 'mg', 'cbk-zam', 'kg', 'arc', 'rmy', 'gn', 'so', 'kab', 'ks', 'stq', 'ce', 'udm', 'mzn', 'pap', 'cu', 'sah', 'tet', 'sd', 'lo', 'ba', 'pnb', 'iu', 'na', 'got', 'bo', 'dsb', 'chr', 'cdo', 'hak', 'om', 'my', 'sm', 'ee', 'pcd', 'ug', 'as', 'ti', 'av', 'bm', 'zu', 'pnt', 'nv', 'cr', 'pih', 'ss', 've', 'bi', 'rw', 'ch', 'arz', 'xh', 'kl', 'ik', 'bug', 'dz', 'ts', 'tn', 'kv', 'tum', 'xal', 'st', 'tw', 'bxr', 'ak', 'ab', 'ny', 'fj', 'lbe', 'ki', 'za', 'ff', 'lg', 'sn', 'ha', 'sg', 'ii', 'cho', 'rn', 'mh', 'chy', 'ng', 'kj', 'ho', 'mus', 'kr', 'hz', 'mwl', 'pa', 'xmf', 'lez', 'chm']
 
+
+    #if ":" in entityString:
+    if entityString.startswith("w:"):
+        rest = entityString.split("w:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
+    elif entityString.startswith(":w:"):
+        rest = entityString.split(":w:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
+    elif entityString.startswith("wikipedia:"):
+        rest = entityString.split("wikipedia:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
+    elif entityString.startswith(":wikipedia:"):
+        rest = entityString.split(":wikipedia:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
     
-    if "|" in candidate:
-        # most likely an entity
-         parts = candidate.split("|")
-         
-         if (parts[0].lower() == "w") or (parts[0].lower() == "wikipedia"):
-             # write to good result file
-         else:
-             # not an entity
-             
-             
-    elif ":" in candidate:
-        # could be entity or langlink
-        parts = candidate.split(":")
+    if "|" in entityString:
+        parts = entityString.split("|")
         
-        if len(parts)==2:
-            if parts[0].lower() in langPrefixes:
-                # this is a langlink
-            
-        if candidate.startswith("w:"):
-            
-        elif candidate.startswith(":w:"):
-            
-        elif candidate.startswith("wikipedia:"):
-            
-        elif candidate.startswith(":wikipedia:"):
-            
-        elif candidate.startswith("")
-                
-            if "category:wikipedia" in cand.lower():
-            j += 1
-            continue
-        
-    else:
+        if (parts[0].lower() == "w") or (parts[0].lower() == "wikipedia"):
+            if len(parts) == 2:
+                # w|ent
+                return parts[1].replace(" ", "_")     
+                print "detected: (w, wikipedia)|ent"
+            elif len(parts) == 3:
+                # w|ent|phrase
+                return parts[1].replace(" ", "_")
+                print "detected: (w, wikipedia)|ent|phrase"
+            elif len(parts) ==    4:
+                # w|ent|anchor|phrase
+                return parts[1].replace(" ", "_")    
+                print "detected: (w, wikipedia)|ent|anchor|phrase"
+
+ 
+def extractEntityName(entityString):
+    #allowedPrefs = wikiPrefixes = ['w', 'wikipedia']
+    #if ":" in entityString:
+    if entityString.lower().startswith("w:"):
+        rest = entityString.split("w:")[1]
+        #print "--- ", rest
+        if "|" in rest: return extractEntityName("w|" + rest)
+    elif entityString.startswith(":w:"):
+        rest = entityString.split(":w:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
+    elif entityString.startswith("wikipedia:"):
+        rest = entityString.split("wikipedia:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
+    elif entityString.startswith(":wikipedia:"):
+        rest = entityString.split(":wikipedia:")[1]
+        if "|" in rest: return extractEntityName("w|" + rest)
     
+    if "|" in entityString:
+        parts = entityString.split("|")
+        
+        if (parts[0].lower() == "w") or (parts[0].lower() == "wikipedia"):
+            if len(parts) == 2:
+                # w|ent
+                return parts[1].replace(" ", "_")     
+                print "detected: (w, wikipedia)|ent"
+            elif len(parts) == 3:
+                # w|ent|phrase
+                return parts[1].replace(" ", "_")
+                print "detected: (w, wikipedia)|ent|phrase"
+            elif len(parts) ==    4:
+                # w|ent|anchor|phrase
+                return parts[1].replace(" ", "_")    
+                print "detected: (w, wikipedia)|ent|anchor|phrase"
+
+     
     
     
     """
-    pilatus@comp:/dev/shm/wikinews/entities$ grep ":w:" ./*| wc -l
+pilatus@comp:/dev/shm/wikinews/entities$ grep ":w:" ./*| wc -l
 3018
 pilatus@comp:/dev/shm/wikinews/entities$ grep "w|" ./*| wc -l
 31650
