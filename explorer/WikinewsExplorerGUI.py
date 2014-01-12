@@ -5,6 +5,7 @@ import os, urllib2, sys
 import xml.etree.ElementTree as ET
 import webbrowser
 
+# url = "http://en.wikipedia.org/w/api.php?format=xml&action=query&titles=" + entityName +"&prop=links"
 
 #from Timer import Timer
 
@@ -123,6 +124,7 @@ class WikinewsExplorer:
 	
 	
 	def onEntitySelect(self, event):
+		""" fetch entity info directly from wikipedia """
 		# enpty content box
 		self.lstWikiLinks.delete(0, END)
 		widg = event.widget

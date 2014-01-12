@@ -33,6 +33,7 @@ rm /dev/shm/wikinews/articles_cleaned/8636-Results_of_2005_United_Kingdom_Genera
 rm /dev/shm/wikinews/articles_cleaned/*-Australia-200*
 rm /dev/shm/wikinews/articles_cleaned/*News_briefs*
 rm /dev/shm/wikinews/articles_cleaned/*Wikinews_Shorts*
+rm //dev/shm/wikinews/articles_cleaned/*-Crosswords-*
 
 
 

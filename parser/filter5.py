@@ -1,5 +1,5 @@
 """ gettting the entities for each document 
-/media/MYLINUXLIVE/AIFB/Wikinews/parser/filter3.py"""
+/media/MYLINUXLIVE/AIFB/Wikinews/parser/filter5.py"""
 # 741194 [[...]] elements in dump 
 # 205647 non-namespace candidates
 # 190383 non-namespace and non-'Image'
