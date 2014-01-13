@@ -16,7 +16,7 @@ forbiddenPrefixes = ['media', 'special', 'talk', 'user', 'user talk', 'wikinews'
 langPrefixes = ['en', 'de', 'fr', 'nl', 'it', 'es', 'ru', 'sv', 'pl', 'ja', 'pt', 'ar', 'zh', 'uk', 'ca', 'no', 'fi', 'cs', 'hu', 'tr', 'ro', 'sw', 'ko', 'kk', 'vi', 'da', 'eo', 'sr', 'id', 'lt', 'vo', 'sk', 'he', 'fa', 'bg', 'sl', 'eu', 'war', 'lmo', 'et', 'hr', 'new', 'te', 'nn', 'th', 'gl', 'el', 'ceb', 'simple', 'ms', 'ht', 'bs', 'bpy', 'lb', 'ka', 'is', 'sq', 'la', 'br', 'hi', 'az', 'bn', 'mk', 'mr', 'sh', 'tl', 'cy', 'io', 'pms', 'lv', 'ta', 'su', 'oc', 'jv', 'nap', 'nds', 'scn', 'be', 'ast', 'ku', 'wa', 'af', 'be-x-old', 'an', 'ksh', 'szl', 'fy', 'frr', 'yue', 'ur', 'ia', 'ga', 'yi', 'als', 'hy', 'am', 'roa-rup', 'map-bms', 'bh', 'co', 'cv', 'dv', 'nds-nl', 'fo', 'fur', 'glk', 'gu', 'ilo', 'kn', 'pam', 'csb', 'km', 'lij', 'li', 'ml', 'gv', 'mi', 'mt', 'nah', 'ne', 'nrm', 'se', 'nov', 'qu', 'os', 'pi', 'pag', 'ps', 'pdc', 'rm', 'bat-smg', 'sa', 'gd', 'sco', 'sc', 'si', 'tg', 'roa-tara', 'tt', 'to', 'tk', 'hsb', 'uz', 'vec', 'fiu-vro', 'wuu', 'vls', 'yo', 'diq', 'zh-min-nan', 'zh-classical', 'frp', 'lad', 'bar', 'bcl', 'kw', 'mn', 'haw', 'ang', 'ln', 'ie', 'wo', 'tpi', 'ty', 'crh', 'jbo', 'ay', 'zea', 'eml', 'ky', 'ig', 'or', 'mg', 'cbk-zam', 'kg', 'arc', 'rmy', 'gn', 'so', 'kab', 'ks', 'stq', 'ce', 'udm', 'mzn', 'pap', 'cu', 'sah', 'tet', 'sd', 'lo', 'ba', 'pnb', 'iu', 'na', 'got', 'bo', 'dsb', 'chr', 'cdo', 'hak', 'om', 'my', 'sm', 'ee', 'pcd', 'ug', 'as', 'ti', 'av', 'bm', 'zu', 'pnt', 'nv', 'cr', 'pih', 'ss', 've', 'bi', 'rw', 'ch', 'arz', 'xh', 'kl', 'ik', 'bug', 'dz', 'ts', 'tn', 'kv', 'tum', 'xal', 'st', 'tw', 'bxr', 'ak', 'ab', 'ny', 'fj', 'lbe', 'ki', 'za', 'ff', 'lg', 'sn', 'ha', 'sg', 'ii', 'cho', 'rn', 'mh', 'chy', 'ng', 'kj', 'ho', 'mus', 'kr', 'hz', 'mwl', 'pa', 'xmf', 'lez', 'chm']
 
 wikiPrefixes = ['w', 'wikipedia']
-allowedPrefixes = langPrefixes + wikiPrefixes
+allowedPrefixes = wikiPrefixes # + langPrefixes 
 
 defaultNamespace = "{http://www.mediawiki.org/xml/export-0.8/}"
 
@@ -72,14 +72,14 @@ for fileName in articles:
         if "category:wikipedia" in cand.lower():
             j += 1
             continue         
-        # this is a link to wikipedia entity in a specific language
+        
         if length > 2 and (cand.split(":")[1].lower() in langPrefixes): 
-            print "lang-entity detected"
+        	# this is a link to wikipedia entity in a specific language
             j +=1
             continue
 
         
-        if prefix1 in allowedPrefixes:
+        if prefix1 in allowedPrefixes and (length > 1):
             numberEntityCands += 1
             resultFile.write(cand + "\n")
             goodPrefixes.write("[[" + cand + "\n")
@@ -109,7 +109,7 @@ for fileName in articles:
             
             
         
-        if prefix1 in allowedPrefixes:
+        if prefix1 in allowedPrefixes and (length > 1):
             if length > 1:            
                 numberEntityCands += 1
                 resultFile.write(cand + "\n")

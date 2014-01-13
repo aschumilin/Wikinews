@@ -35,10 +35,6 @@ rm /dev/shm/wikinews/articles_cleaned/*News_briefs*
 rm /dev/shm/wikinews/articles_cleaned/*Wikinews_Shorts*
 rm /dev/shm/wikinews/articles_cleaned/*-Crosswords-*
 
-# these contain broken wiki markup syntax
-rm /dev/shm/wikinews/articles_cleaned/207413-* 
-rm /dev/shm/wikinews/articles_cleaned/562833-*
-
 
 
 
@@ -49,6 +45,9 @@ python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter3.py
 python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter4.py
 
 #8: remove articles containing less than (<) X entity mentions (now, threshold is 3)
-python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter5.py
+python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter5exit
+exit
+exit
+py
 
 echo "done"

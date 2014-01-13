@@ -35,9 +35,6 @@ rm /dev/shm/wikinews/articles_cleaned/*News_briefs*
 rm /dev/shm/wikinews/articles_cleaned/*Wikinews_Shorts*
 rm /dev/shm/wikinews/articles_cleaned/*-Crosswords-*
 
-# these contain broken wiki markup syntax
-rm /dev/shm/wikinews/articles_cleaned/207413-* 
-rm /dev/shm/wikinews/articles_cleaned/562833-*
 
 
 
