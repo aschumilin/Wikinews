@@ -231,10 +231,9 @@ for docName in articles:
 		
 T.click()
 
-print "done \n tensor built in ", T.show()
+print "tensor built in ", T.show()
 
 """
-print " traversing tensor ..."
 T.click()
 
 # test:
@@ -247,7 +246,7 @@ for d in tensor:
 
 T.click()		
 
-print " done \n tensor traversed in ", T.show()
+print " tensor traversed in ", T.show()
 
 print " summe = entCount?: ", (summe == entCount), " : ", summe
 """
