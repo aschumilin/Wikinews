@@ -51,4 +51,8 @@ python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter4.py
 #8: remove articles containing less than (<) X entity mentions (now, threshold is 3)
 python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter5.py
 
+#9: build tensor
+python /media/MYLINUXLIVE/AIFB/Wikinews/tensor/make.py
+
+
 echo "done"

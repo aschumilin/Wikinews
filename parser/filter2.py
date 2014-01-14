@@ -56,7 +56,6 @@ charCountStat.close()
 print "start copying good articles"
 cutOffLength = 510 # characters
 T.click()
-i = 0
 for item in pageCountList:
 	pageTextLength = item[1]
 	pageFileName = str(item[0])
@@ -66,9 +65,6 @@ for item in pageCountList:
 		#os.system(str('cp ' + articles_pages + pageFileName + ' ' + articles_cleaned + pageFileName)) # this doesnt work
 		try: 
 			copyfile(str(articles_pages + pageFileName), str(articles_cleaned + pageFileName))
-			i += 1 
-			if (i % 100) == 0:
-				print ".",
 		except:
 			print "error: ", pageFileName 
 			traceback.print_exc()

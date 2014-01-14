@@ -41,6 +41,7 @@ goodPrefixes = codecs.open("/dev/shm/wikinews/goodPrefixes", "w", "utf-8")
 
 j = 0
 i = 0
+t = 0
 for fileName in articles:
     
     # 1. extract article text
@@ -72,11 +73,18 @@ for fileName in articles:
         if "category:wikipedia" in cand.lower():
             j += 1
             continue         
-        
+        if cand.lower().startswith("w:|"):
+            print cand, "\n"
+            # this is a broken link
+            j += 1
+            t +=1
+            continue
         if length > 2 and (cand.split(":")[1].lower() in langPrefixes): 
-        	# this is a link to wikipedia entity in a specific language
+            # this is a link to wikipedia entity in a specific language
             j +=1
             continue
+        
+        
 
         
         if prefix1 in allowedPrefixes and (length > 1):
@@ -127,7 +135,7 @@ goodPrefixes.close()
 T.click()
 print " j ", j
 print str(numberEntityCands) , " ent cands in " , T.show()
-
+print "??????????????????????????????????????????????????", t
 """
 def classifyCnadidateEntity(entityString):
     # classifier for [[...]] and {{...}} candidates 

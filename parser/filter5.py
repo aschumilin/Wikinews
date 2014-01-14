@@ -47,18 +47,17 @@ for fileName in articles:
 		# count entities in each article
 		numEntityMentions += 1
 
-
+	article.close()
 	if numEntityMentions < minNumMentions:
 		# this article contains too few entity mentions
 		numThinArticles += 1
-		print ".", 
 	else: 	
 		# copy good article (corresponding entities and lang_links file) to target dir
 		# shutil.copyfile("sourcefile", "destfile")
 		copyfile(sourceDirEnts + fileName, resultDirEnts + fileName)
 		copyfile(sourceDirLanglinks + fileName, resultDirLanglinks + fileName)
 		
-	article.close()
+	
 
 
 
