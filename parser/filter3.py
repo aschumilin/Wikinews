@@ -84,7 +84,15 @@ for fileName in articles:
             j +=1
             continue
         
-        
+        """
+        23419-Energy_companies_to_raise_consumer_rates :  w:
+
+192625-New_'failed_states_index'_report_published :  Wikipedia:|Wikipedia
+
+73519-Anwar's_lawsuit_over_gay_slur_by_former_Mala :  Wikipedia||Mahathir bin Mohamad
+
+193250-Russian_police_to_'check'_officer_allegedly :  Wikipedia:|Wikipedia
+        """        
 
         
         if prefix1 in allowedPrefixes and (length > 1):
@@ -135,7 +143,7 @@ goodPrefixes.close()
 T.click()
 print " j ", j
 print str(numberEntityCands) , " ent cands in " , T.show()
-print "??????????????????????????????????????????????????", t
+print "w:| ??", t
 """
 def classifyCnadidateEntity(entityString):
     # classifier for [[...]] and {{...}} candidates 
