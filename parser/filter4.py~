@@ -97,7 +97,7 @@ globalEnts.close()
 	
 
 T.click()
-print " lang links: ", str(sum(langLinkStat)), "\n entities: ", str(sum(entStat))
+print " lang links: ", str(summe(langLinkStat)), "\n entities: ", str(summe(entStat))
 print "done in " , T.show()
 
 
