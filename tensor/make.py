@@ -70,12 +70,15 @@ resultFile = open("/dev/shm/wikinews/entities_phrases.txt", "w")
 resultEntDictFile = "/dev/shm/wikinews/ent_dict.json"
 resultPhraseDictFile = "/dev/shm/wikinews/phrase_dict.json"
 resultDocDictFile = "/dev/shm/wikinews/doc_dict.json"
+resultTensorFile = "/dev/shm/wikinews/tensor.csv"
 
 articles = os.listdir(sourceDir)
 
 
+
 entDict = dict()
 phraseDict = dict()
+docDict = dict()
 entCount = 0
 docCount = 0
 
@@ -84,6 +87,14 @@ entIndex = 0
 phraseIndex = 0
 
 for fileName in articles:
+	
+	# build document dictionary: use the article-ID as key 
+	docID = fileName.split("-")[0]
+	if docID not in docDict:
+		docDict.update({ docID : docIndex})
+		docIndex += 1
+	#=========================================
+	
 	
 	article = open(sourceDir + fileName, "r")
 	numEntityMentions = 0	
@@ -150,94 +161,48 @@ print "found ", entCount, " entity mentions in ", len(articles), " articles"
 print " number of distinct entities: ", len(entDict)
 print " referred to by ", len(phraseDict), " distinct phrases"
 
-print " ", len(articles), " ", len(entDict), " ", len(phraseDict), " ", entCount
-
-"""
-=== SUMMARY (entity mention threshold=3) ===
-dictionaries building done in  0.967303037643s
-found  161717  entity mentions in  15720  articles
- number of distinct entities:  64310
- referred to by  69850  distinct phrases
+#print " ", len(articles), " ", len(entDict), " ", len(phraseDict), " ", entCount
 
 
-=== SUMMARY (entity mention threshold=5) ===
-dictionaries building done in  1.01186704636s
-found  149496  entity mentions in  12243  articles
- number of distinct entities:  60839
- referred to by  65920  distinct phrases
-"""
-# tf = open("/dev/shm/wikinews/DE.txt", "w")
-# for e in entDict:
-#	 tf.write(e + "\n")
-# tf.close()
-# tf = open("/dev/shm/wikinews/DP.txt", "w")
-# for p in phraseDict:
-#	 tf.write(p+"\n")
-# tf.close()
 
-#print "docDict: ", sys.getsizeof(docDict)
+
+print "docDict size [bytes]: ", sys.getsizeof(docDict)
 print "entDict size [bytes]: ", sys.getsizeof(entDict)
-print "phraseDict [bytes]: ", sys.getsizeof(phraseDict)
+print "phraseDict size [bytes]: ", sys.getsizeof(phraseDict)
 
 
 
-# 2. save the ent and phrase dictionaries
-#============================================
-#============================================
-saveDicts = open(resultEntDictFile, "w")
-saveDicts.write(json.dumps(entDict))
-saveDicts.close()
-
-saveDicts = open(resultEntDictFile, "w")
-for e in entDict.keys():
-	saveDicts.write(e+"\n")
-saveDicts.close()
-
-saveDicts = open(resultPhraseDictFile, "w")
-saveDicts.write(json.dumps(phraseDict))
-saveDicts.close() 
-
-saveDicts = open(resultPhraseDictFile, "w")
-for p in phraseDict.keys():
-	saveDicts.write(p+"\n")
-saveDicts.close()
-
-"""
-# 3. build tensor 
+# 2. build tensor 
 #============================================
 #============================================
 T.click()
 
-docDict = dict()
 
 numEnt = len(entDict)
 numPhrase = len(phraseDict)
 numDoc = len(articles)
 
-tensorFileDir = "/home/aschumilin/"
-tensorFile = open(tensorFileDir + "wikinews_tensor.csv", "wb")
+
+tensorFile = open(resultTensorFile, "wb")
 fileWriter = csv.writer(tensorFile, delimiter=';', quoting=csv.QUOTE_NONE)
 
-print " building tensor ..."
-i = 0
+print " building sparse tensor representation ..."
+
 for docName in articles:
-	if 1%100 == 0: print ".",
-	i += 1
 
-	# build document dictionary: use the article-ID as key 
+
 	docID = docName.split("-")[0]
-	if docID not in docDict:
-		docDict.update({ docID : docIndex})
-		docIndex += 1
-	#=========================================
-
-
+	docIndex = docDict.get(docID)
+	
+	
 	doc = open(sourceDir + docName, "r")
 	
-	docSlice = [[False for i in range(numPhrase)] for j in range(numEnt)]
+	#docSlice = [[False for i in range(numPhrase)] for j in range(numEnt)]
+	
+	
 	
 	for entityMention in doc:
-		# get the cleaned entity and phrase
+		# produce the cleaned entity and phrase
 		returned = extractPhrase(entityMention)
 		ent = returned[0].strip()
 		phrase = returned[1].strip()
@@ -253,31 +218,57 @@ for docName in articles:
 		
 		
 		
-		# 1. fetch the index numbers of the entity and phrase from dictionaries
+		# 1. fetch the index numbers of the document, entity and phrase from dictionaries
 		entIndex = entDict.get(ent)
 		phraseIndex = phraseDict.get(phrase)
 		
+
 		
-		# 2. set 1 in the corresponding field
-		docSlice[entIndex][phraseIndex] = True
+		
+		# 2. add the entry to the sparse tensor representation
+		# [docID, entID, phraseID]
+		tensorEntry = [docIndex, entIndex, phraseIndex]
+		# 3. append the slice of the current document	
+		fileWriter.writerow(tensorEntry)
+		
 	
-	# append the slice of the current document	
-	fileWriter.writerrow(docSlice)
+	
 
 # close result file
 tensorFile.close()
 
 
-# save the doc dictionary to file
-saveDicts = open(resultDocDictFile, "w")
-saveDicts.write(json.dumps(docDict))
+# 3. save the results
+#============================================
+#============================================
+saveDicts = open(resultEntDictFile, "w")
+saveDicts.write(json.dumps(entDict))
 saveDicts.close()
 
+saveDicts = open(resultPhraseDictFile, "w")
+saveDicts.write(json.dumps(phraseDict))
+saveDicts.close() 
+
+saveDicts = open(resultDocDictFile, "w")
+saveDicts.write(json.dumps(docDict))
+saveDicts.close() 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+"""
 print " allocating tensor memory..."
 # build tensor of shape: TENSOR[docIndex][entIndex][phraseIndex]
 tensor = [[[0 for i in range(numPhrase)] for j in range(numEnt)] for i in range(numDoc)]
