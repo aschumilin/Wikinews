@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#export H="/media/MYLINUXLIVE/AIFB/Wikinews/"
+#export H="/home/aifb/stud/ls3/atsc/2_Wikinews/"
 #export M="/dev/shm/wikinews/"
 # example article :
 # /dev/shm/wikinews/articles_cleaned/86383-Al_Sharpton_speaks_out_on_race,_rights_and_w
@@ -8,7 +8,7 @@
 mkdir /dev/shm/wikinews
 
 # 2: extract the pages
-cp /media/MYLINUXLIVE/AIFB/datasets/en/wikinews-pages.tar.gz /dev/shm/wikinews/
+cp /home/aifb/stud/ls3/atsc/de_wikinews_2014-03-21/wikinews-pages.tar.gz /dev/shm/wikinews/
 cd /dev/shm/wikinews/ # ohne gehts nicht
 tar -zxf wikinews-pages.tar.gz
 
@@ -22,7 +22,7 @@ rm /dev/shm/wikinews/wikinews-pages.tar.gz
 mkdir /dev/shm/wikinews/articles_cleaned
 
 # 4: execute filter2
-python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter2.py
+python /home/aifb/stud/ls3/atsc/2_Wikinews/parser/filter2.py
 
 # 5: manual cleaning of bad pages
 rm /dev/shm/wikinews/articles_cleaned/*Main_Page*
@@ -43,16 +43,16 @@ rm /dev/shm/wikinews/articles_cleaned/562833-*
 
 
 # 6: extract candidate entities from each article (entities & lang-links)
-python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter3.py
+python /home/aifb/stud/ls3/atsc/2_Wikinews/parser/filter3.py
 
 #7: separate lang-links from entities
-python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter4.py
+python /home/aifb/stud/ls3/atsc/2_Wikinews/parser/filter4.py
 
 #8: remove articles containing less than (<) X entity mentions (now, threshold is 3)
-python /media/MYLINUXLIVE/AIFB/Wikinews/parser/filter5.py
+python /home/aifb/stud/ls3/atsc/2_Wikinews/parser/filter5.py
 
 #9: build tensor
-python /media/MYLINUXLIVE/AIFB/Wikinews/tensor/make.py
+python /home/aifb/stud/ls3/atsc/2_Wikinews/tensor/make.py
 
 
 echo "done"

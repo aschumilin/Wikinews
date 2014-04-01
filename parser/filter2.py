@@ -13,7 +13,7 @@ if not os.path.exists(articles_cleaned):
     os.makedirs(articles_cleaned)
 
 
-dir = "/media/MYLINUXLIVE/AIFB/datasets/en/en_stats/" # this one must exist
+dir = "/home/aifb/stud/ls3/atsc/de_wikinews_2014-03-21/de_stats/" # this one must exist
 file = open(dir + "charCount", "r")
 resultFile = open(dir + "pagesSortedByCount", "w")
 charCountStat = open(dir + "charCountStatistics", "w")

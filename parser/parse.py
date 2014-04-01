@@ -15,11 +15,11 @@ T = Timer() # stop watch to keep track of cpu time
 #baseDir = "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/"
 baseDir = "/dev/shm/wikinews/" 
 
-#homeDir =  "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/"
-homeDir = "/media/MYLINUXLIVE/AIFB/datasets/en/"
+homeDir =  "/home/aifb/stud/ls3/atsc/de_wikinews_2014-03-21/"
+#homeDir = "/media/MYLINUXLIVE/AIFB/datasets/en/"
 
-#dumpFileName = "/home/aifb/stud/ls3/atsc/en_wikinews_2013-10-30/enwikinews-20131030-pages-articles.xml"
-dumpFileName = "/media/MYLINUXLIVE/AIFB/datasets/en/enwikinews-20131030-pages-articles.xml"
+dumpFileName = "/home/aifb/stud/ls3/atsc/de_wikinews_2014-03-21/dewikinews-20140321-pages-articles.xml"
+#dumpFileName = "/media/MYLINUXLIVE/AIFB/datasets/en/enwikinews-20131030-pages-articles.xml"
 
 articleDirName = baseDir + "articles_pages/"
 junkDirName = baseDir + "other_pages/"

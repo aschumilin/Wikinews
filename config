@@ -1,0 +1,4 @@
+{"data-dir": "./wikilinks_dataset/", 
+"clean-dir": "./wikilinks_cleaned/", 
+"test-dir": "./test_data/",
+"result-dir": "./results/"}
